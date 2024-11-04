@@ -1,0 +1,15 @@
+- name: instalacja paczek
+  hosts: local
+  connection: local
+  become: true
+
+  tasks:
+  - name: instalacja htop
+    package:
+      name: htop
+      state: present
+
+  - name: instalacja python3-pip
+    package:
+      name: python3-pip
+      state: present

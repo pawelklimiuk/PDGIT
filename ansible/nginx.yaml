@@ -1,0 +1,36 @@
+- name: instalacja nginx
+  hosts: local
+  connection: local
+  become: true
+
+  tasks:
+  - name: aktualizacja apta
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+  - name: instalacja nginx
+    package:
+      name: nginx
+      state: present   
+
+  - name: uruchomienie serwisu
+    systemd:
+        name: nginx
+        state: started
+        enabled: yes  
+  
+  - name: kopia pliku
+    template:
+      src: "/home/panda/templates/site.conf.j2"
+      dest: "/etc/nginx/sites-enabled/{{ item }}.conf"
+    loop:
+      - "127.0.0.1"
+      - "127.0.0.2"
+      - "127.0.0.3"
+    register: zmiana_template
+
+  - name: nginx reload
+    systemd:
+        name: nginx
+        state: reloaded
+        daemon_reload: yes
+    when: zmiana_template is changed

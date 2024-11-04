@@ -1,0 +1,9 @@
+- name: IP
+  hosts: local
+  connection: local
+
+  tasks:
+  - name: create
+    file:
+      path: testansible.txt
+      state: touch
