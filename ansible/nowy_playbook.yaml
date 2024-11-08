@@ -1,0 +1,6 @@
+- name: Install packages locally
+  hosts: local
+  connection: local
+  become: true
+  roles:
+   - packages
